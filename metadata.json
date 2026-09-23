@@ -1,0 +1,6 @@
+{
+  "name": "Aris",
+  "description": "Hub integral de información de vuelo para pilotos comerciales. Plan de vuelo, navegación 3D y meteorología en tiempo real.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

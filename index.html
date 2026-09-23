@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aris — Hub de Información de Vuelo para Pilotos Comerciales</title>
+    <meta name="description" content="Aris reúne el plan de vuelo, la navegación 3D y el clima en tiempo real en una sola app móvil pensada para pilotos comerciales y operaciones aéreas." />
+    
+    <meta property="og:title" content="Aris — Hub de Información de Vuelo para Pilotos Comerciales" />
+    <meta property="og:description" content="Centraliza el plan de vuelo, navegación 3D y clima en una sola aplicación para pilotos comerciales." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/hero.css">
+    <link rel="stylesheet" href="/css/features.css">
+    <link rel="stylesheet" href="/css/waitlist.css">
+    <link rel="stylesheet" href="/css/footer.css">
+
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('aris_theme');
+          var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+
+    <canvas id="interactiveBg" class="interactive-bg-canvas" aria-hidden="true"></canvas>
+
+    <header class="nav-header">
+      <div class="nav-container">
+        <a href="#" class="nav-brand" aria-label="Aris Inicio">
+          <svg class="nav-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 22l10-4 10 4L12 2z"/>
+          </svg>
+          <span>Aris</span>
+        </a>
+
+        <ul class="nav-links">
+          <li class="nav-link-item">
+            <a href="#producto" class="nav-link-anchor">
+              <span>Producto</span>
+              <span class="nav-arrow" aria-hidden="true">▾</span>
+            </a>
+            <ul class="nav-dropdown">
+              <li><a href="#caracteristicas">Gestión de Vuelo</a></li>
+              <li><a href="#mapas">Cartografía 3D</a></li>
+              <li><a href="#clima">Vientos y Turbulencia</a></li>
+            </ul>
+          </li>
+          <li class="nav-link-item">
+            <a href="#caracteristicas" class="nav-link-anchor">
+              <span>Características</span>
+              <span class="nav-arrow" aria-hidden="true">▾</span>
+            </a>
+            <ul class="nav-dropdown">
+              <li><a href="#problema">El Reto de Cabina</a></li>
+              <li><a href="#como-funciona">Arquitectura Offline</a></li>
+            </ul>
+          </li>
+          <li class="nav-link-item">
+            <a href="#como-funciona" class="nav-link-anchor">Flujo de Cabina</a>
+          </li>
+          <li class="nav-link-item">
+            <a href="#seguridad" class="nav-link-anchor">Seguridad Operacional</a>
+          </li>
+        </ul>
+
+        <div class="nav-actions">
+          <button type="button" class="theme-toggle-btn" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+          </button>
+          <a href="#waitlist" class="nav-quick-icon" title="Acceso a la beta" aria-label="Acceso a la beta">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+              <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+            </svg>
+          </a>
+          <a href="#waitlist" class="btn-pill-primary nav-cta-btn">Únete a la lista de espera</a>
+          <button class="mobile-toggle" aria-label="Abrir menú de navegación" aria-expanded="false">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <nav class="mobile-drawer" aria-label="Navegación móvil">
+        <a href="#producto" class="nav-link-anchor">Producto</a>
+        <a href="#caracteristicas" class="nav-link-anchor">Características</a>
+        <a href="#como-funciona" class="nav-link-anchor">Flujo de Cabina</a>
+        <a href="#seguridad" class="nav-link-anchor">Seguridad Operacional</a>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-top: 1px solid var(--color-gray-border); border-bottom: 1px solid var(--color-gray-border);">
+          <span style="font-size: 0.95rem; font-weight: 500; color: var(--color-black);">Modo de visualización</span>
+          <button type="button" class="theme-toggle-btn" aria-label="Cambiar tema" title="Cambiar tema">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+          </button>
+        </div>
+        <a href="#waitlist" class="btn-pill-primary text-center">Únete a la lista de espera</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero-section" id="producto">
+        <div class="container-antigravity">
+          <div class="hero-badge-lockup animate-on-scroll">
+            <svg class="hero-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 22l10-4 10 4L12 2z"/>
+            </svg>
+            <span>Aris</span>
+          </div>
+
+          <h1 class="hero-title animate-on-scroll">
+            Toda la información de tu vuelo, en un solo lugar
+          </h1>
+
+          <p class="hero-subtitle animate-on-scroll">
+            Aris reúne el plan de vuelo, la navegación y el clima en una sola app, pensada para pilotos comerciales.
+          </p>
+
+          <div class="hero-cta-group animate-on-scroll">
+            <a href="#waitlist" class="btn-pill-primary">Solicitar acceso a la beta</a>
+            <a href="#como-funciona" class="btn-pill-secondary">Ver cómo funciona</a>
+          </div>
+
+          <p class="text-center mt-4 text-muted small" style="font-size: 0.82rem;">
+            * Aplicación móvil nativa en fase de pre-lanzamiento. Desarrollada para tablets y smartphones aeronáuticos.
+          </p>
+        </div>
+      </section>
+
+      <section class="statement-section">
+        <div class="container-antigravity">
+          <p class="statement-text animate-on-scroll">
+            “Aris es el hub de información de vuelo que centraliza lo que hoy está disperso en media docena de sistemas.”
+          </p>
+        </div>
+      </section>
+
+      <section class="problem-section" id="problema">
+        <div class="container-antigravity">
+          <div class="problem-header animate-on-scroll">
+            <h2 class="problem-title">La información de vuelo sigue dispersa</h2>
+            <p class="problem-lead">
+              Planes de vuelo, cartas de navegación y reportes meteorológicos viven en sistemas distintos que no se hablan entre sí. Cada consulta cruzada le cuesta tiempo al piloto, justo cuando más lo necesita: antes de despegar.
+            </p>
+          </div>
+
+          <div class="problem-grid">
+            <div class="problem-item animate-on-scroll">
+              <div class="problem-number">01</div>
+              <h3 class="problem-item-title">Sistemas fragmentados</h3>
+              <p class="problem-item-text">
+                El despacho emite el plan operacional en un formato estático, las cartas de navegación están en una aplicación aislada y los reportes de viento residen en terminales independientes.
+              </p>
+            </div>
+
+            <div class="problem-item animate-on-scroll">
+              <div class="problem-number">02</div>
+              <h3 class="problem-item-title">Desfase temporal en cabina</h3>
+              <p class="problem-item-text">
+                Las actualizaciones de última hora obligan a correlacionar datos manualmente entre documentos impresos y pantallas no sincronizadas, aumentando la carga mental previa al despegue.
+              </p>
+            </div>
+
+            <div class="problem-item animate-on-scroll">
+              <div class="problem-number">03</div>
+              <h3 class="problem-item-title">Consultas lentas bajo presión</h3>
+              <p class="problem-item-text">
+                Durante la preparación del briefing y los cambios de slot ATC, buscar el impacto de un cambio de altitud o combustible requiere alternar continuamente entre ventanas y papeles.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-spacious" id="caracteristicas">
+        <div class="container-antigravity">
+
+          <div class="feature-row">
+            <div class="feature-content animate-on-scroll">
+              <span class="feature-eyebrow">Gestión Operacional</span>
+              <h2 class="feature-title">Tu vuelo, de un vistazo</h2>
+              <p class="feature-text">
+                Ruta, horarios, tripulación y estado del vuelo sincronizados en tiempo real, sin cambiar de aplicación.
+              </p>
+              <ul class="feature-bullets">
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>Hoja de ruta operacional con horarios STD, STA y cálculo dinámico de calzos.</span>
+                </li>
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>Asignación de tripulación, descansos y roles en cabina de mando.</span>
+                </li>
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>Seguimiento de autorizaciones ATC y cálculo de combustible al despegue.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="feature-phone-wrapper animate-on-scroll">
+              <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img 
+                    src="/src/assets/images/flight_route_overview_1790125915272.jpg" 
+                    alt="Vista previa de ruta de vuelo en Aris" 
+                    class="phone-screen-img"
+                    referrerpolicy="no-referrer"
+                    loading="lazy"
+                  >
+                  <div class="phone-screen-body">
+                    <div class="phone-badge-row">
+                      <span style="color: var(--color-black);">IB6252 · A350-900</span>
+                      <span style="color: #1a7f37; font-weight: 700;">CONFIRMADO</span>
+                    </div>
+                    <div class="phone-route-display">
+                      <div>
+                        <div class="phone-airport-code">MAD</div>
+                        <div style="font-size: 0.75rem; color: var(--color-gray-muted);">Madrid-Barajas</div>
+                        <div style="font-size: 0.85rem; font-weight: 600; color: var(--color-black);">12:45 UTC</div>
+                      </div>
+                      <div style="text-align: center; color: var(--color-gray-muted); font-size: 0.72rem;">
+                        <div>7h 55m</div>
+                        <div style="font-size: 0.8rem; color: var(--color-accent); font-weight: 700;">FL380 ➔</div>
+                      </div>
+                      <div style="text-align: right;">
+                        <div class="phone-airport-code">JFK</div>
+                        <div style="font-size: 0.75rem; color: var(--color-gray-muted);">New York-JFK</div>
+                        <div style="font-size: 0.85rem; font-weight: 600; color: var(--color-black);">20:40 UTC</div>
+                      </div>
+                    </div>
+                    <div class="phone-data-grid">
+                      <div class="phone-data-card">
+                        <div>Tripulación</div>
+                        <div class="phone-data-val">2 PIC · 1 FO</div>
+                      </div>
+                      <div class="phone-data-card">
+                        <div>FOB Combustible</div>
+                        <div class="phone-data-val">54.2 T</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-row reverse" id="mapas">
+            <div class="feature-content animate-on-scroll">
+              <span class="feature-eyebrow">Cartografía Vectorial</span>
+              <h2 class="feature-title">Navegación en tres dimensiones</h2>
+              <p class="feature-text">
+                Visualiza el trayecto completo con relieve de terreno, zonas de tráfico aéreo y puntos de referencia, antes y durante el vuelo.
+              </p>
+              <ul class="feature-bullets">
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>Modelado tridimensional de orografía y altitudes mínimas de sector (MSA).</span>
+                </li>
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>Transición fluida entre cartas de salida SID, ruta y aproximación STAR.</span>
+                </li>
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>Puntos de notificación (waypoints) con tiempos estimados y niveles de crucero óptimos.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="feature-phone-wrapper animate-on-scroll">
+              <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img 
+                    src="/src/assets/images/nav_map_3d_1790125894800.jpg" 
+                    alt="Mapa 3D con relieve y waypoints en Aris" 
+                    class="phone-screen-img"
+                    referrerpolicy="no-referrer"
+                    loading="lazy"
+                  >
+                  <div class="phone-screen-body">
+                    <div class="phone-badge-row">
+                      <span style="color: var(--color-black);">Waypoint Activo</span>
+                      <span style="color: var(--color-accent); font-weight: 700;">NORTA FL380</span>
+                    </div>
+                    <div class="phone-route-display">
+                      <div>
+                        <div style="font-size: 0.75rem; color: var(--color-gray-muted);">Rumbo Mag</div>
+                        <div class="phone-data-val">288°</div>
+                      </div>
+                      <div>
+                        <div style="font-size: 0.75rem; color: var(--color-gray-muted);">Ground Speed</div>
+                        <div class="phone-data-val">486 kts</div>
+                      </div>
+                      <div>
+                        <div style="font-size: 0.75rem; color: var(--color-gray-muted);">Distancia</div>
+                        <div class="phone-data-val">142 NM</div>
+                      </div>
+                    </div>
+                    <div class="phone-data-grid">
+                      <div class="phone-data-card">
+                        <div>Siguiente punto</div>
+                        <div class="phone-data-val">KEEKA (14:02)</div>
+                      </div>
+                      <div class="phone-data-card">
+                        <div>Espacio Aéreo</div>
+                        <div class="phone-data-val">Shanwick OCA</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-row" id="clima">
+            <div class="feature-content animate-on-scroll">
+              <span class="feature-eyebrow">Meteorología Avanzada</span>
+              <h2 class="feature-title">El clima, actualizado al minuto</h2>
+              <p class="feature-text">
+                Vientos, visibilidad y turbulencia esperada a lo largo de la ruta, con datos que se refrescan automáticamente.
+              </p>
+              <ul class="feature-bullets">
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>Componentes de viento en cara/cola proyectadas por nivel de vuelo.</span>
+                </li>
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>Detección de cizalladura y turbulencia en aire claro (CAT) modelada con resolución horaria.</span>
+                </li>
+                <li class="feature-bullet-item">
+                  <span class="feature-bullet-icon" aria-hidden="true">■</span>
+                  <span>METAR, TAF y NOTAM decodificados de forma legible para aeropuertos alternos.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="feature-phone-wrapper animate-on-scroll">
+              <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img 
+                    src="/src/assets/images/weather_radar_wind_1790125905842.jpg" 
+                    alt="Gráfica de vientos y meteorología en Aris" 
+                    class="phone-screen-img"
+                    referrerpolicy="no-referrer"
+                    loading="lazy"
+                  >
+                  <div class="phone-screen-body">
+                    <div class="phone-badge-row">
+                      <span style="color: var(--color-black);">Viento en Altitud</span>
+                      <span style="color: #2b59c3; font-weight: 700;">+38 KT COLA</span>
+                    </div>
+                    <div class="phone-route-display">
+                      <div>
+                        <div style="font-size: 0.75rem; color: var(--color-gray-muted);">Turbulencia</div>
+                        <div class="phone-data-val" style="color: #b25e00;">MOD FL340</div>
+                      </div>
+                      <div>
+                        <div style="font-size: 0.75rem; color: var(--color-gray-muted);">Temperatura</div>
+                        <div class="phone-data-val">-54° C</div>
+                      </div>
+                      <div>
+                        <div style="font-size: 0.75rem; color: var(--color-gray-muted);">Alterno BOS</div>
+                        <div class="phone-data-val" style="color: #1a7f37;">CAVOK</div>
+                      </div>
+                    </div>
+                    <div class="phone-data-grid">
+                      <div class="phone-data-card">
+                        <div>Capa ISA</div>
+                        <div class="phone-data-val">ISA +2° C</div>
+                      </div>
+                      <div class="phone-data-card">
+                        <div>Radar Doppler</div>
+                        <div class="phone-data-val">Sin ecos ruta</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="section-spacious bg-subtle" id="como-funciona">
+        <div class="container-antigravity">
+          <div class="text-center max-w-700 mx-auto animate-on-scroll" style="max-width: 680px; margin: 0 auto;">
+            <span class="feature-eyebrow">Flujo de Integración</span>
+            <h2 class="problem-title">Cómo funciona</h2>
+            <p class="problem-lead">
+              Un flujo de incorporación pensado para integrarse con los sistemas existentes de despacho sin alterar los manuales de operaciones.
+            </p>
+          </div>
+
+          <div class="steps-grid">
+            <div class="step-card animate-on-scroll">
+              <div class="step-num">01</div>
+              <h3 class="step-title">Solicita acceso</h3>
+              <p class="step-text">
+                Únete a la lista de espera con tu correo y aerolínea para recibir invitación al programa de beta cerrada.
+              </p>
+            </div>
+
+            <div class="step-card animate-on-scroll">
+              <div class="step-num">02</div>
+              <h3 class="step-title">Conecta tu perfil</h3>
+              <p class="step-text">
+                Vincula tu app con los sistemas de despacho de tu operador o importa planes de vuelo estandarizados en un toque.
+              </p>
+            </div>
+
+            <div class="step-card animate-on-scroll">
+              <div class="step-num">03</div>
+              <h3 class="step-title">Vuela informado</h3>
+              <p class="step-text">
+                Consulta ruta, mapas y clima desde un solo lugar, con total persistencia local incluso sin conexión en altitud.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-spacious" id="seguridad">
+        <div class="container-antigravity">
+          <div class="text-center mx-auto animate-on-scroll" style="max-width: 760px; margin: 0 auto 54px;">
+            <span class="feature-eyebrow">Rigor Operacional</span>
+            <h2 class="problem-title">Construido con estándares de la industria</h2>
+            <p class="problem-lead">
+              Los datos de vuelo se cifran de extremo a extremo y el acceso cumple con los protocolos de seguridad de la operación aérea. Aris está siendo desarrollado junto con pilotos activos.
+            </p>
+          </div>
+
+          <div class="problem-grid">
+            <div class="problem-item animate-on-scroll">
+              <div class="problem-number">SEGURIDAD</div>
+              <h3 class="problem-item-title">Cifrado de grado aeronáutico</h3>
+              <p class="problem-item-text">
+                Comunicaciones aseguradas mediante TLS 1.3 con certificados anclados y almacenamiento local blindado con cifrado AES-256 para prevenir accesos no autorizados a datos de despacho.
+              </p>
+            </div>
+
+            <div class="problem-item animate-on-scroll">
+              <div class="problem-number">DISPONIBILIDAD</div>
+              <h3 class="problem-item-title">Operación autónoma offline</h3>
+              <p class="problem-item-text">
+                Los datos meteorológicos de crucero, planes alternativos y orografía 3D se descargan antes del pushback, garantizando consulta instantánea en vuelo sin requerir satélite continuo.
+              </p>
+            </div>
+
+            <div class="problem-item animate-on-scroll">
+              <div class="problem-number">VALIDACIÓN</div>
+              <h3 class="problem-item-title">Co-diseñado con tripulaciones</h3>
+              <p class="problem-item-text">
+                Cada elemento de la interfaz sigue las guías de legibilidad OACI y FAA para visores de cabina (EFB Clase 1 y 2), minimizando el deslumbramiento y los toques accidentales con turbulencia.
+              </p>
+            </div>
+          </div>
+
+          <div class="text-center mt-5 animate-on-scroll">
+            <a href="#modalSpecs" class="btn-pill-secondary modal-trigger" role="button">
+              Consultar especificaciones técnicas de la beta
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="waitlist-section" id="waitlist">
+        <div class="container-antigravity">
+          <div class="waitlist-card animate-on-scroll">
+            
+            <div class="waitlist-header">
+              <h2 class="waitlist-title">Sé de los primeros en volar con Aris</h2>
+              <p class="waitlist-subtitle">Te avisamos apenas abramos el acceso a la beta.</p>
+            </div>
+
+            <div id="root"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="modalSpecs" class="modal aris-modal aerobrief-modal">
+      <div class="modal-content">
+        <h4>Especificaciones de la Beta</h4>
+        <p>
+          Aris está siendo desarrollado como una suite móvil enfocada en la ergonomía y toma de decisiones de tripulaciones de vuelo comerciales.
+        </p>
+        <p>
+          <strong>Compatibilidad objetivo:</strong> iOS / iPadOS 17+ y Android 14+ con optimización especial para formatos tablet de cabina (Apple iPad Mini / Pro y Samsung Galaxy Tab Active).
+        </p>
+        <p>
+          <strong>Privacidad de planes de vuelo:</strong> Ningún documento confidencial de despacho o datos de pasajeros se transmiten a servidores públicos. El procesamiento de ruta se ejecuta con arquitectura local en el dispositivo del piloto.
+        </p>
+      </div>
+      <div class="modal-footer" style="background: transparent; border: none; padding: 0 24px 20px;">
+        <a href="#!" class="modal-close btn-pill-primary" style="padding: 8px 20px !important; font-size: 0.88rem !important;">Entendido</a>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container-antigravity">
+        <div class="footer-top-grid">
+          
+          <div class="footer-brand-col">
+            <div class="footer-logo-lockup">
+              <svg class="footer-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 22l10-4 10 4L12 2z"/>
+              </svg>
+              <span>Aris</span>
+            </div>
+            <p class="footer-brand-desc">
+              Hub integral de información de vuelo diseñado para pilotos comerciales y personal de operaciones aéreas.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="footer-col-title">Producto</h3>
+            <ul class="footer-links-list">
+              <li><a href="#caracteristicas" class="footer-link">Características</a></li>
+              <li><a href="#mapas" class="footer-link">Navegación 3D</a></li>
+              <li><a href="#clima" class="footer-link">Clima y Vientos</a></li>
+              <li><a href="#seguridad" class="footer-link">Seguridad Operacional</a></li>
+              <li><a href="#como-funciona" class="footer-link">Roadmap 2026</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="footer-col-title">Compañía</h3>
+            <ul class="footer-links-list">
+              <li><a href="#problema" class="footer-link">Sobre Aris</a></li>
+              <li><a href="#seguridad" class="footer-link">Estándares Aeronáuticos</a></li>
+              <li><a href="mailto:operaciones@aris.app" class="footer-link">Contacto Operaciones</a></li>
+              <li><a href="#waitlist" class="footer-link">Programa de Beta</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="footer-col-title">Legal</h3>
+            <ul class="footer-links-list">
+              <li><a href="#modalSpecs" class="footer-link modal-trigger">Aviso de Privacidad</a></li>
+              <li><a href="#modalSpecs" class="footer-link modal-trigger">Términos de Servicio</a></li>
+              <li><a href="#modalSpecs" class="footer-link modal-trigger">Cumplimiento Normativo</a></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom-bar">
+          <div>© 2026 Aris. Todos los derechos reservados.</div>
+          <div class="footer-disclaimer">
+            Aris es un hub informativo en fase de pre-lanzamiento para tripulaciones. No reemplaza los sistemas primarios certificados de la aeronave.
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script type="module" src="/src/main.tsx"></script>
+    <script src="/js/theme-toggle.js" defer></script>
+    <script src="/js/scroll-animations.js" defer></script>
+    <script src="/js/mobile-menu.js" defer></script>
+    <script src="/js/particle-background.js" defer></script>
+    <script src="/js/main.js" defer></script>
+  </body>
+</html>

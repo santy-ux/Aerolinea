@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     window.ArisTheme.init();
   }
 
+  if (window.ArisLanguage && typeof window.ArisLanguage.init === 'function') {
+    window.ArisLanguage.init();
+  }
+
   if (window.ArisParticleBackground && typeof window.ArisParticleBackground.init === 'function') {
     window.ArisParticleBackground.init();
   }

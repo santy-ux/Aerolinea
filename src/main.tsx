@@ -12,3 +12,4 @@ if (rootElement) {
     </StrictMode>
   );
 }
+//funciones , configuraciones y demas cosas que se necesiten para el proyecto

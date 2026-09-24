@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
     window.ArisParticleBackground.init();
   }
 
-  const mobileMenu = window.ArisMobileMenu || window.AeroMobileMenu;
+  const mobileMenu = window.ArisMobileMenu;
   if (mobileMenu && typeof mobileMenu.init === 'function') {
     mobileMenu.init();
   }
 
-  const scrollAnim = window.ArisScrollAnimations || window.AeroScrollAnimations;
+  const scrollAnim = window.ArisScrollAnimations;
   if (scrollAnim && typeof scrollAnim.init === 'function') {
     scrollAnim.init();
   }

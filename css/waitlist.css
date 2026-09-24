@@ -46,6 +46,12 @@
   height: 3rem;
   background-color: transparent !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  display: block;
+  width: 100%;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  outline: 0;
 }
 
 .waitlist-card .input-field input[type=text]:focus,
@@ -69,8 +75,12 @@
 .waitlist-card .input-field label {
   font-family: var(--font-body);
   color: var(--color-gray-muted) !important;
+  position: absolute;
+  top: 0.8rem;
   left: 0;
   font-size: 0.95rem;
+  pointer-events: none;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 .waitlist-card .input-field label.active {
   color: var(--color-black) !important;
@@ -156,8 +166,8 @@
   margin: 8px 0;
 }
 
-.modal.aris-modal,
-.modal.aerobrief-modal {
+.modal.aris-modal {
+  display: none;
   max-width: 580px;
   border-radius: 20px;
   background: var(--card-bg) !important;

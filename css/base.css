@@ -60,15 +60,6 @@ a:hover { color: var(--color-black); }
   padding-right: clamp(20px, 4vw, 40px);
 }
 
-.container-narrow {
-  width: 100%;
-  max-width: var(--container-narrow-width);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
 .section-spacious {
   padding-top: var(--section-padding-y);
   padding-bottom: var(--section-padding-y);
@@ -150,4 +141,20 @@ a:hover { color: var(--color-black); }
 .animate-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.hero-disclaimer {
+  margin-top: 1.5rem;
+  color: var(--color-gray-muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.section-intro,
+.section-cta {
+  text-align: center;
+}
+
+.section-cta {
+  margin-top: 3rem;
 }

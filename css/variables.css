@@ -25,8 +25,6 @@
 
   --section-padding-y: clamp(95px, 12vw, 155px);
   --container-max-width: 1160px;
-  --container-narrow-width: 840px;
-
   --radius-pill: 9999px;
   --radius-card: 22px;
   --radius-phone: 44px;

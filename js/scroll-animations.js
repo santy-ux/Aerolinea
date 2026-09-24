@@ -1,4 +1,4 @@
-window.ArisScrollAnimations = window.AeroScrollAnimations = {
+window.ArisScrollAnimations = {
   init: function() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion || !('IntersectionObserver' in window)) {

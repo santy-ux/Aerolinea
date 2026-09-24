@@ -1,7 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import 'materialize-css/dist/css/materialize.min.css';
-import './index.css';
+import '@materializecss/materialize/dist/css/materialize.min.css';
 import App from './App.tsx';
 
 const rootElement = document.getElementById('root');

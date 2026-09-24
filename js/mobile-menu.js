@@ -1,4 +1,4 @@
-window.ArisMobileMenu = window.AeroMobileMenu = {
+window.ArisMobileMenu = {
   init: function() {
     const toggleBtn = document.querySelector('.mobile-toggle');
     const drawer = document.querySelector('.mobile-drawer');

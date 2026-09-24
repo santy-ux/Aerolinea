@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
     anchor.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
       if (targetId === '#' || targetId === '' || targetId === '#!' || targetId === '#modalSpecs') return;
+      // Las pestañas de Materialize dentro de una modal no deben hacer scroll de la página
+      if (this.closest('#modalPruebaGratis')) return;
 
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
